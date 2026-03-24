@@ -1,17 +1,22 @@
-pipeline {
+
+pipeline{
     agent any
-
-    stages {
-        stage('Test') {
-            steps {
-                sh 'mvn test'
+    stages{
+        stage('parallel work'){
+            parallel{
+                stage('test'){
+                    steps{
+                        sh 'mvn test'
+                    }
+                }
+                stage('build'){
+                    steps{
+                        sh 'mvn clean package -DskipTests'
+                    }
+                }
             }
+            
         }
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean package -DskipTests'
-            }
-        }
+       
     }
 }
